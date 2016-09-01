@@ -31,12 +31,12 @@ app.use(morgan('dev'));
 app.get('/setup', function(req, res) {
 
 	// create a sample user
-	var nick = new User({ 
+	var user = new User({ 
 		name: 'rafaelescrich', 
 		password: 'password',
 		admin: true 
 	});
-	nick.save(function(err) {
+	user.save(function(err) {
 		if (err) throw err;
 
 		console.log('User saved successfully');
@@ -84,7 +84,6 @@ apiRoutes.post('/authenticate', function(req, res) {
 
 				res.json({
 					success: true,
-					message: 'Enjoy your token!',
 					token: token
 				});
 			}		
@@ -100,8 +99,8 @@ apiRoutes.post('/authenticate', function(req, res) {
 apiRoutes.use(function(req, res, next) {
 
 	// check header or url parameters or post parameters for token
-	var token = req.body.token || req.param('token') || req.headers['x-access-token'];
-
+	var token = req.body.token || req.params.token || req.headers['x-access-token'];
+	debugger;
 	// decode token
 	if (token) {
 
@@ -133,7 +132,7 @@ apiRoutes.use(function(req, res, next) {
 // authenticated routes
 // ---------------------------------------------------------
 apiRoutes.get('/', function(req, res) {
-	res.json({ message: 'Welcome to the coolest API on earth!' });
+	res.json({ message: 'API in Javascript with JWT' });
 });
 
 apiRoutes.get('/users', function(req, res) {
@@ -152,4 +151,4 @@ app.use('/api', apiRoutes);
 // start the server ================================================
 // =================================================================
 app.listen(port);
-console.log('Magic happens at http://localhost:' + port);
+console.log('http://localhost:' + port);
